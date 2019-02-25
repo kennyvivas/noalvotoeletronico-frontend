@@ -1,10 +1,18 @@
-﻿<h1>Home</h1>
-<p>You're logged in with Angular 7 & JWT!!</p>
-<p>Your role is: <strong>{{currentUser.role}}</strong>.</p>
-<p>This page can be accessed by all authenticated users.</p>
+﻿<h1>#noalvotoeletronico</h1>
+<p>...pero igual hacemos el app porque da gusto</p>
 <div>
-    Current user from secure api end point:
-    <ul>
-        <li *ngIf="userFromApi">{{userFromApi.firstName}} {{userFromApi.lastName}}</li>
-    </ul>
+    Hola {{user.email}}
+    <p>Desde aqui podrás votar por los proyectos candidatos del último proceso de votación activo</p>
 </div>
+<div *ngIf="activeProcess">
+        <p>Trimestre {{activeProcess.quarter}}</p>
+        <p>Budget total {{activeProcess.total_budget}}</p>
+</div>
+<hr>
+<div *ngIf="!activeProcess">No hay un proceso abierto</div>
+
+<ul>
+        <li *ngFor="let project of projects">
+            {{project.name}} | {{project.value}}
+        </li>
+</ul>

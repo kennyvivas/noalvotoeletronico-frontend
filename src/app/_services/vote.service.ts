@@ -7,8 +7,6 @@ export class VoteService {
     constructor(private http: HttpClient) { }
 
     sendVote(vote:Vote[]) {
-        // console.log(JSON.parse(vote))
-        console.log(vote)
         return this.http.post<Vote[]>(`${config.apiUrl}/api/polls/votes/add_vote/`,vote);
     }
 

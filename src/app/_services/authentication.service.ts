@@ -18,6 +18,9 @@ export class AuthenticationService {
     public get currentUserValue(): User {
         return this.currentUserSubject.value;
     }
+    getRole(){
+        return this.http.get<boolean>(`${config.apiUrl}/api/user/role/`);
+    }
 
     login(username: string, password: string) {
         return this.http.post<any>(`${config.apiUrl}/api/user/login/`, { "email":username, "password":password })
@@ -28,6 +31,10 @@ export class AuthenticationService {
                     localStorage.setItem('currentUser', JSON.stringify(user));
                     this.currentUserSubject.next(user);
                 }
+                this.getRole().subscribe(is_admin => {
+                    user.is_admin = is_admin;
+                });
+
                 return user;
             }));
     }
@@ -37,4 +44,5 @@ export class AuthenticationService {
         localStorage.removeItem('currentUser');
         this.currentUserSubject.next(null);
     }
+
 }

@@ -8,4 +8,5 @@ export class User {
     lastName: string;
     role: Role;
     token?: string;
+    is_admin?: boolean;
 }

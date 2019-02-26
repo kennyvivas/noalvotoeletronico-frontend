@@ -19,6 +19,7 @@ export class HomeComponent {
     projects:Project[];
     loading = false;
     error="";
+    message="";
 
     constructor(
         private userService: UserService,
@@ -86,7 +87,7 @@ export class HomeComponent {
             .pipe(first())
             .subscribe(
                 data => {
-                   
+                    this.message = data["data"]; 
                 },
                 error => {
                     this.error = error;

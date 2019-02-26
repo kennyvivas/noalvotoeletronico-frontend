@@ -10,4 +10,8 @@ export class ProcessService {
         return this.http.get<Process>(`${config.apiUrl}/api/polls/process/get_active`);
     }
 
+    closeProcess(){
+        return this.http.get(`${config.apiUrl}/api/polls/process/finishProcess/`);
+    }
+
 }

@@ -29,6 +29,7 @@ export class HomeComponent {
         private authenticationService: AuthenticationService
     ) {
         this.currentUser = this.authenticationService.currentUserValue;
+       
     }
 
   
@@ -36,7 +37,13 @@ export class HomeComponent {
     ngOnInit() {
         this.userService.getById(this.currentUser.id).subscribe(user => {
             this.user = user;
+            
         });
+        this.userService.isAdmin().subscribe(isadmin => {
+            this.user.is_admin = isadmin; 
+        });        
+ 
+
         this.processService.getActiveProcess().subscribe(process =>{
             this.activeProcess = process;
             if (process.id){
@@ -49,6 +56,17 @@ export class HomeComponent {
 
     drop(event: CdkDragDrop<string[]>) {
         moveItemInArray(this.projects, event.previousIndex, event.currentIndex);
+    }
+
+    closeProcess(){
+        this.processService.closeProcess().subscribe(
+            data => {
+               
+            },
+            error => {
+                this.error = error;
+                this.loading = false;
+            });
     }
 
     vote() {
@@ -68,7 +86,7 @@ export class HomeComponent {
             .pipe(first())
             .subscribe(
                 data => {
-                    console.log(data,'Mensaje de')
+                   
                 },
                 error => {
                     this.error = error;

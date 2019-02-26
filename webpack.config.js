@@ -32,8 +32,8 @@ module.exports = {
         new webpack.DefinePlugin({
             // global app config object
             config: JSON.stringify({
-                // apiUrl: 'https://ancient-springs-30332.herokuapp.com'
-                apiUrl: 'http://localhost:8000'
+                apiUrl: 'https://ancient-springs-30332.herokuapp.com'
+                // apiUrl: 'http://localhost:8000'
             })
         })
     ],

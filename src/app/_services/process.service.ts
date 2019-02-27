@@ -14,4 +14,8 @@ export class ProcessService {
         return this.http.get(`${config.apiUrl}/api/polls/process/finishProcess/`);
     }
 
+    openProcess(){
+        return this.http.get(`${config.apiUrl}/api/polls/process/openProcess/`);
+    }
+
 }

@@ -4,15 +4,17 @@
     Hola {{user.email}} 
     <p>Desde aqui podrás votar por los proyectos candidatos del último proceso de votación activo</p>
 </div>
-<div *ngIf="activeProcess">
+<div *ngIf="showActiveProcess">
         <p>Trimestre {{activeProcess.quarter}}</p>
-        <p>Budget total {{activeProcess.total_budget}}</p>
-        <p *ngIf="user.is_admin"><button [disabled]="loading" (click)="closeProcess()" class="btn btn-primary">Cerrar proceso de votación</button></p>
+        <p>Presupuesto total {{activeProcess.total_budget | currency}} </p>
+        <p *ngIf="user.is_admin">
+            <button [disabled]="loading" (click)="closeProcess()" class="btn btn-primary">Cerrar proceso de votación</button>
+        </p>
 </div>
 <hr>
 
 <div *ngIf="!activeProcess">No hay un proceso de votación abierto</div>
-<section *ngIf="activeProcess">
+<section *ngIf="showActiveProcess">
 <div cdkDropList (cdkDropListDropped)='drop($event)'>
 <div *ngFor="let project of projects" style="
     height: 50px;
@@ -21,7 +23,7 @@
     padding:10px;
     display: flex;
     justify-content: center;
-    align-items: center;" cdkDrag> {{project.name}} | {{project.value}}</div>
+    align-items: center;" cdkDrag> {{project.name}} | {{project.value | currency}}</div>
 </div>
 <div class="form-group" 
 style="padding: 10px; 
@@ -36,3 +38,22 @@ align-items: center;">
 <div *ngIf="message" class="alert alert-warning">{{message}}</div>
 <div *ngIf="error" class="alert alert-danger">{{error}}</div>
 </section>
+
+<section *ngIf="showResults">
+    <h3>Proyectos seleccionados en el último proceso</h3>
+    <div cdkDropList>
+    <div *ngFor="let project of results" style="
+        height: 50px;
+        border: 1px solid gray;
+        background-color: white;
+        padding:10px;
+        display: flex;
+        justify-content: center;
+        align-items: center;"> {{project.name}} | {{project.value | currency}}</div>
+    </div>
+    <div *ngIf="user.is_admin" style="margin-top:10px; align-content: center">
+            <button  (click)="reopenProcess()" class="btn btn-primary">Reabrir proceso de votación</button>
+    </div>
+    </section>
+
+

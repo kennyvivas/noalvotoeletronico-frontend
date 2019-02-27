@@ -17,9 +17,12 @@ export class HomeComponent {
     activeProcess: Process;
     process: Process;
     projects:Project[];
+    results:Project[];
     loading = false;
+    showResults = false;
     error="";
     message="";
+    showActiveProcess=false;
 
     constructor(
         private userService: UserService,
@@ -47,6 +50,7 @@ export class HomeComponent {
 
         this.processService.getActiveProcess().subscribe(process =>{
             this.activeProcess = process;
+            this.showActiveProcess = true;
             if (process.id){
                 this.projectService.getProjectList().subscribe(projects =>{
                     this.projects = projects;
@@ -62,13 +66,28 @@ export class HomeComponent {
     closeProcess(){
         this.processService.closeProcess().subscribe(
             data => {
-               
+               this.showResults = true;
+               this.showActiveProcess = false;
+               this.results = (data as any);
             },
             error => {
                 this.error = error;
                 this.loading = false;
             });
     }
+
+    reopenProcess(){
+        this.processService.openProcess().subscribe(
+            data => {
+               this.showResults = false;
+               this.showActiveProcess = true;
+            },
+            error => {
+                this.error = error;
+                this.loading = false;
+            });
+    }
+
 
     vote() {
         let totalVotes = this.projects.length;

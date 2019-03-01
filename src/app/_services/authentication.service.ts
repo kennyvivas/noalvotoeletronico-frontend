@@ -1,9 +1,11 @@
 ﻿import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { BehaviorSubject, Observable, throwError } from 'rxjs';
+import { map, catchError } from 'rxjs/operators';
+
 
 import { User } from '@/_models';
+import { LoginComponent } from '@/login';
 
 @Injectable({ providedIn: 'root' })
 export class AuthenticationService {
@@ -18,9 +20,15 @@ export class AuthenticationService {
     public get currentUserValue(): User {
         return this.currentUserSubject.value;
     }
+
+    private errorHandler(errorResponse:HttpErrorResponse){
+        
+
+    }
     getRole(){
         return this.http.get<boolean>(`${config.apiUrl}/api/user/role/`);
     }
+
 
     login(username: string, password: string) {
         return this.http.post<any>(`${config.apiUrl}/api/user/login/`, { "email":username, "password":password })
@@ -34,7 +42,6 @@ export class AuthenticationService {
                 this.getRole().subscribe(is_admin => {
                     user.is_admin = is_admin;
                 });
-
                 return user;
             }));
     }
@@ -43,6 +50,15 @@ export class AuthenticationService {
         // remove user from local storage to log user out
         localStorage.removeItem('currentUser');
         this.currentUserSubject.next(null);
+    }
+
+    createUser(username: string, password: string) {
+        return this.http.post<any>(`${config.apiUrl}/api/user/create/`, { "email":username, "password":password })
+        .pipe(map(user => {
+            // User created. Return user
+           return user;   
+        }));
+
     }
 
 }
